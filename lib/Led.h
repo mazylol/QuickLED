@@ -19,8 +19,6 @@ public:
         /// @param value
         void set(unsigned int value)
         {
-            value = validateBrightness(value);
-
             analogWrite(Pin, value);
         }
     } LED;
