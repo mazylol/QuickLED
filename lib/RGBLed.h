@@ -7,28 +7,23 @@ public:
     /// @brief RGB color struct.
     typedef struct
     {
-        int Red;
-        int Green;
-        int Blue;
+        unsigned int Red;
+        unsigned int Green;
+        unsigned int Blue;
     } Color;
 
     /// @brief LED struct. Represents a single RGB LED. Contains most of the important stuff.
     typedef struct
     {
-        const int RedPin;
-        const int GreenPin;
-        const int BluePin;
+        const unsigned int RedPin;
+        const unsigned int GreenPin;
+        const unsigned int BluePin;
 
         /// @brief Sets the color of the LED.
         /// @param color
         void set(Color color)
         {
-            if (color.Red > 255)
-                color.Red = 255;
-            if (color.Green > 255)
-                color.Green = 255;
-            if (color.Blue > 255)
-                color.Blue = 255;
+            color = validateColor(color);
 
             analogWrite(RedPin, color.Red);
             analogWrite(GreenPin, color.Green);
@@ -45,7 +40,7 @@ public:
     } LED;
 
     /// @brief Creates a new LED struct.
-    static LED create(int redPin, int greenPin, int bluePin)
+    static LED create(unsigned int redPin, unsigned int greenPin, unsigned int bluePin)
     {
         return LED{.RedPin = redPin, .GreenPin = greenPin, .BluePin = bluePin};
     }
@@ -60,12 +55,7 @@ public:
         /// @param delayMs
         static void blink(LED led, Color color, int delayMs)
         {
-            if (color.Red > 255)
-                color.Red = 255;
-            if (color.Green > 255)
-                color.Green = 255;
-            if (color.Blue > 255)
-                color.Blue = 255;
+            color = validateColor(color);
 
             led.set(color);
             delay(delayMs);
@@ -78,36 +68,56 @@ public:
         /// @param delayMs
         static void rainbow(LED led, int delayMs)
         {
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = i, .Green = 0, .Blue = 0});
                 delay(delayMs);
             }
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = 255, .Green = i, .Blue = 0});
                 delay(delayMs);
             }
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = 255 - i, .Green = 255, .Blue = 0});
                 delay(10);
             }
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = 0, .Green = 255, .Blue = i});
                 delay(10);
             }
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = 0, .Green = 255 - i, .Blue = 255});
                 delay(10);
             }
-            for (int i = 0; i < 255; i++)
+            for (unsigned int i = 0; i < 255; i++)
             {
                 led.set(Color{.Red = i, .Green = 0, .Blue = 255});
                 delay(10);
             }
         }
     };
+
+private:
+    /// @brief Validates and corrects the color value.
+    static Color validateColor(Color color)
+    {
+        if (color.Red > 255)
+        {
+            color.Red = 255;
+        }
+        if (color.Green > 255)
+        {
+            color.Green = 255;
+        }
+        if (color.Blue > 255)
+        {
+            color.Blue = 255;
+        }
+
+        return color;
+    }
 };

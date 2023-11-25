@@ -17,10 +17,9 @@ public:
 
         /// @brief Sets the value (brightness) of the LED.
         /// @param value
-        void set(int value)
+        void set(unsigned int value)
         {
-            if (value > 255)
-                value = 255;
+            value = validateBrightness(value);
 
             analogWrite(Pin, value);
         }
@@ -39,10 +38,9 @@ public:
         /// @brief Blink the LED.
         /// @param led
         /// @param delayMs
-        static void blink(LED led, int maxBrightness, int delayMs)
+        static void blink(LED led, unsigned int maxBrightness, int delayMs)
         {
-            if (maxBrightness > 255)
-                maxBrightness = 255;
+            maxBrightness = validateBrightness(maxBrightness);
 
             led.set(maxBrightness);
             delay(delayMs);
@@ -55,7 +53,7 @@ public:
         /// @param delayMs
         static void fadeOut(LED led, int delayMs)
         {
-            for (int i = 255; i >= 0; i--)
+            for (unsigned int i = 255; i >= 0; i--)
             {
                 led.set(i);
                 delay(delayMs);
@@ -67,11 +65,21 @@ public:
         /// @param delayMs
         static void fadeIn(LED led, int delayMs)
         {
-            for (int i = 0; i <= 255; i++)
+            for (unsigned int i = 0; i <= 255; i++)
             {
                 led.set(i);
                 delay(delayMs);
             }
         }
     };
+
+private:
+    /// @brief Validates and corrects the brightness value.
+    static unsigned int validateBrightness(unsigned int brightness)
+    {
+        if (brightness > 255)
+            brightness = 255;
+
+        return brightness;
+    }
 };
