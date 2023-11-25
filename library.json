@@ -1,7 +1,7 @@
 {
     "name": "QuickLED",
     "version": "1.2.0",
-    "description": "FastLED library for Arduino",
+    "description": "A fast and easy-to-use library for programming (RGB )LEDs",
     "repository": {
         "type": "git",
         "url": "https://github.com/mazylol/FastLED.git"

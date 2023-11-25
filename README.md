@@ -94,9 +94,9 @@ RGBLed::Effects::
 ### Non RGB
 - blink
   - ***Params:***
-  - LED (pass in your led variable)
-  - maxBrightness (0-255)
-  - delayMs
+    - LED (pass in your led variable)
+    - maxBrightness (0-255)
+    - delayMs
 - fadeOut
   - ***Params:***
     - LED
